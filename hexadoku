@@ -1,0 +1,202 @@
+
+public class HexadokuStable2709
+{	
+	int datapool[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};// the idea of datapool is that it gets reduced when Numbers are already existen in line , column or block
+	private char[] hexDigits = 
+		{ 
+		    '0', '1', '2', '3', '4', '5', '6', '7', 
+		    '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+		};
+	private int[][] data= // Zeile / Spalte
+		{
+				{-1, 5, 6, -1, 2, -1, -1, 7, -1, -1, 14, 10, -1, -1, 9, 11},
+				{-1, 11, -1, -1, 8, -1, 9, -1, -1, -1, 15, -1, -1, 12, -1, 5},
+				{8, 9, -1, 15, -1, 14, 5, 1, -1, 3, -1, -1, 6, 7, 13, -1},
+				{-1, 12, -1, 3, 6, -1, -1, -1, -1, 13, -1, -1, 10, 14, -1, -1},
+
+				{-1, 13, 8, -1, 15, -1, -1, -1, 0, 4, -1, 11, -1, -1, -1, 10},
+				{-1, -1, 3, -1, -1, 9, 11, 5, 13, 6, 12, -1, -1, -1, 14, 4},
+				{15, -1, -1, 5, 10, -1, -1, -1, -1, -1, 8, 9, 0, 2, -1, -1},
+				{11, -1, -1, -1, -1, -1, 4, -1, -1, -1, 3, 7, -1, -1, -1, -1},
+
+				{-1, 3, -1, -1, 1, 4, -1, -1, -1, -1, 6, -1, -1, 10, -1, 15},
+				{-1, 15, 13, 12, 9, 5, -1, -1, 3, -1, 0, -1, -1, 11, 1, -1},
+				{-1, -1, 0, 7, -1, -1, 12, 6, -1, -1, 4, -1, -1, 5, -1, -1},
+				{-1, -1, -1, -1, -1, -1, 15, 2, -1, 10, -1, 13, 3, -1, 0, 9},
+
+				{-1, 2, -1, -1, -1, 6, 1, -1, -1, 12, -1, -1, 4, 8, -1, -1},
+				{-1, -1, 1, -1, -1, 0, 2, -1, -1, -1, 7, 3, -1, -1, -1, 14},
+				{9, -1, -1, 10, -1, -1, 14, 15, -1, -1, -1, 6, 11, 0, 2, 1},
+				{-1, 14, -1, -1, -1, -1, -1, -1, 11, 5, -1, -1, -1, 6, -1, -1}
+
+		};
+	private int[][] data2 = data;
+	
+	/*
+	 * Inrelevant atm , needed if multiple classes are implemented
+	 */
+	private int[][] giveHex()
+	{
+		return data;
+
+	}
+/*
+ * Method used for the output , it also uses the Mehtod deztohex to Convert Numbers greater than 9 to char's
+ */
+	private void output()
+	{
+		System.out.println();
+		for (int line = 0; line < 16; line++)
+		{
+			for (int column = 0; column < 16; column++)
+			{
+				if (data[line][column] == -1) System.out.print("# ");
+				else if (data[line][column] > 9) System.out.print(deztohex(data[line][column]) + " ");
+				else System.out.print(data[line][column] + " ");
+			}
+			System.out.println();
+		}
+
+	}
+	private void outputDP()
+	{
+		System.out.println();
+		for (int i = 0; i < 16; i++)
+		{
+			System.out.print(datapool[i]+"  ");
+			
+		}
+		System.out.println();
+
+	}
+	/*
+	 * Used by output , described above
+	 */
+	private char deztohex(int dez)
+	{
+		char hex = ' ';
+		hex = hexDigits[dez];
+		return hex;
+	}
+	/*
+	 * used to find a Solution for the Hexadoku
+	 */
+	private void solve()
+	{
+		
+		for (int line = 0; line < 16; line++)					// counts lines
+		{
+			resetdatapool();
+			
+			for (int column = 0; column < 16; column++)				// counts columns 
+			{
+				if(data[line][column]== -1)
+				{
+					checkline(line,column);
+					checkcol(line,column);
+					checkblock(line,column);
+					outputDP();
+					data[line][column] = datapoolrnd();
+				}
+				
+			}
+			
+		}
+		
+		
+	}
+	private void resetdatapool()
+	{
+		for(int i=0;i<16;++i)
+		{
+			datapool[i] = i;
+		}
+	}
+	
+	private void checkline(int line,int col )
+	{
+		for(col = 0;col < 16;++col)
+		{
+			if(data[line][col] != -1)
+			{
+				datapool[data[line][col]] = -1;
+			}
+		}
+		
+	}
+	
+	private void checkcol(int line,int col )
+	{
+		for(;line < 16;line++)
+		{
+			if(data[line][col] != -1)
+			{
+				datapool[data[line][col]] = -1;
+			}
+		}
+		
+	}
+	
+	private void checkblock(int line,int col )
+	{
+		line = (line/4)*4;
+		col = (col/4)*4;
+		
+		for (int boxline = line; boxline < line+4; boxline++)
+		{
+			for (int boxcolumn = col; boxcolumn < col+4; boxcolumn++)
+			{
+				if(data[boxline][boxcolumn] != -1)
+				{
+					datapool[data[boxline][boxcolumn]] = -1;
+				}	
+				
+			}
+			
+		}
+		
+		
+	}
+	
+	private int datapoolrnd()
+	{
+		int ndatapool[]= new int[16]; ;				//possible Cause of a future error or problem!!!
+		int n=0;
+	
+		
+		for(int i = 0; i < 16 ; ++i)
+		{
+			if(datapool[i] != -1)
+			{
+				ndatapool[n] = datapool[i];
+				n++;
+			}
+		}
+		
+		if(n == 0) 									// no solution possible
+		{
+			System.out.println("Solution failed datapool emtpy!");
+			output();
+			System.exit(1);
+		}
+		return ndatapool[(int)(Math.random() * n)] ;
+	}
+	
+
+		
+	/*
+	 * Creates a new Hexadoku Object and executes implemented Methods to output and solve the Hexadoku
+	 */
+	public static void main(String[] args)
+	{
+		HexadokuStable2709 sfe = new HexadokuStable2709();
+		sfe.output();
+		sfe.solve();
+
+
+	}
+	
+	
+}
+
+
