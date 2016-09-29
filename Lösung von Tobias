@@ -1,0 +1,179 @@
+
+ 
+
+/**
+ *Copyright 2016 Airbus Defence & Space GmbH
+ *<br><b>Warning, this program is not performance optimized, it may take a long time
+ *to generate a valid solution, but it should do its job.</b></br>
+ * @author Tobias Sulzmann
+ * @version 0.1
+ *
+ *
+ */
+
+public class Gui {
+    private int[][] data = { { -1, 5, 6, -1, 2, -1, -1, 7, -1, -1, 14, 10, -1, -1, 9, 11 },
+            { -1, 11, -1, -1, 8, -1, 9, -1, -1, -1, 15, -1, -1, 12, -1, 5 },
+            { 8, 9, -1, 15, -1, 14, 5, 1, -1, 3, -1, -1, 6, 7, 13, -1 },
+            { -1, 12, -1, 3, 6, -1, -1, -1, -1, 13, -1, -1, 10, 14, -1, -1 },
+
+            { -1, 13, 8, -1, 15, -1, -1, -1, 0, 4, -1, 11, -1, -1, -1, 10 },
+            { -1, -1, 3, -1, -1, 9, 11, 5, 13, 6, 12, -1, -1, -1, 14, 4 },
+            { 15, -1, -1, 5, 10, -1, -1, -1, -1, -1, 8, 9, 0, 2, -1, -1 },
+            { 11, -1, -1, -1, -1, -1, 4, -1, -1, -1, 3, 7, -1, -1, -1, -1 },
+
+            { -1, 3, -1, -1, 1, 4, -1, -1, -1, -1, 6, -1, -1, 10, -1, 15 },
+            { -1, 15, 13, 12, 9, 5, -1, -1, 3, -1, 0, -1, -1, 11, 1, -1 },
+            { -1, -1, 0, 7, -1, -1, 12, 6, -1, -1, 4, -1, -1, 5, -1, -1 },
+            { -1, -1, -1, -1, -1, -1, 15, 2, -1, 10, -1, 13, 3, -1, 0, 9 },
+
+            { -1, 2, -1, -1, -1, 6, 1, -1, -1, 12, -1, -1, 4, 8, -1, -1 },
+            { -1, -1, 1, -1, -1, 0, 2, -1, -1, -1, 7, 3, -1, -1, -1, 14 },
+            { 9, -1, -1, 10, -1, -1, 14, 15, -1, -1, -1, 6, 11, 0, 2, 1 },
+            { -1, 14, -1, -1, -1, -1, -1, -1, 11, 5, -1, -1, -1, 6, -1, -1 }
+            
+
+    };
+    private int counter=0;
+    public static void main(String[] args) throws Exception {
+        Gui gui = new Gui();
+        // gui.showResult();
+        gui.solve(0, 0);
+    }
+
+
+    /**
+     * This method checks, whether the given number fits into the cell or not, judging by
+     * the given numbers in the current row.
+     * @param row The index of the row
+     * @param num The number that should be tested*/
+    private boolean checkRow(int row, int num) {
+        for (int col = 0; col < 16; col++)
+            if (data[row][col] == num)
+                return false;
+
+        return true;
+    }
+
+    /**
+     * This method checks, whether the given number fits into the cell or not, judging by
+     * the given numbers in the current column.
+     * @param col The index of the column
+     * @param num The number that should be tested*/
+    private boolean checkCol(int col, int num) {
+        for (int row = 0; row < 16; row++)
+            if (data[row][col] == num)
+                return false;
+
+        return true;
+    }
+
+    /**
+     * This method checks, whether the given number fits into the cell or not, judging by
+     * the given numbers in the current 4x4 box.
+     * @param row The index of the row
+     * @param col The index of the column
+     * @param num The number that should be tested*/
+    private boolean checkBox(int row, int col, int num) {
+        /**
+         * the following 2 lines get the top left corner of the current box
+         */
+        row = (row / 4) * 4;
+        col = (col / 4) * 4;
+
+        for (int r = 0; r < 4; r++)
+            for (int c = 0; c < 4; c++)
+                if (data[row + r][col + c] == num)
+                    return false;
+
+        return true;
+    }
+
+    /**
+     * Solves the Hexadoku, thats it, easy, isn't it?
+     * @param row The index of the current row
+     * @param col The index of the current column*/
+    private void solve(int row, int col){
+        if (row > 15) {
+            printMatrix(data);
+            System.exit(0);
+        }
+
+        // If the cell is not empty, continue with the next cell
+        if (data[row][col] != -1) {
+            next(row, col);
+        } else {
+            // Find a valid number for the empty cell
+            for (int num = 0; num < 16; num++) {
+                if (checkRow(row, num) && checkCol(col, num) && checkBox(row, col, num)) {
+                    data[row][col] = num;
+
+                    // Next try of the next cell as a recursive call
+                    next(row, col);
+                }
+            }
+
+            // No valid number was found, clean up and try again
+            data[row][col] = -1;
+        }
+    }
+    /**
+     * Simply prints out the given 2D array formatted as a table
+     * @param data the 2D Array that should be printed out*/
+    private void printMatrix(int[][] data) {
+
+        /**
+         * Lines 155 to 183 converts the decimal numbers back to hexadecimal numbers
+         * */
+        String[][] hexArray =new String[16][16];
+        for(int i=0;i<16;++i){
+            for(int j=0;j<16;j++){
+                hexArray[i][j]= String.valueOf(data[i][j]);
+                if(data[i][j]>9){
+                    if(data[i][j]==10){
+                        hexArray[i][j]="A";
+                    }
+                    if(data[i][j]==11){
+                        hexArray[i][j]="B";
+                    }
+                    if(data[i][j]==12){
+                        hexArray[i][j]="C";
+                    }
+                    if(data[i][j]==13){
+                        hexArray[i][j]="D";
+                    }
+                    if(data[i][j]==14){
+                        hexArray[i][j]="E";
+                    }
+                    if(data[i][j]==15){
+                        hexArray[i][j]="F";
+                    }
+                }
+
+            }
+
+        }
+
+        for (int r = 0; r < data.length; r++) {
+            for (int c = 0; c < data[r].length; c++)
+                System.out.print(hexArray[r][c] + " ");
+            System.out.println();
+            
+        }
+        System.out.println("Durchläufe: "+counter);
+    }
+    /**
+     * Jumps to the next column or the next row, based on the current column
+     **/
+    private void next(int row, int col){
+        if (col < 15){
+        	counter++;
+            solve(row, col + 1);
+        }
+        else{
+        	counter++;
+            solve(row + 1, 0);
+        }
+    }
+}
+
