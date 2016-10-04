@@ -1,9 +1,6 @@
 
 public class Hexadoku
 {
-	private int[] eline = new int [256];
-	private int[] ecolumn = new int[256];
-	private int forbidden = -1;
 	private char[] hexDigits =
 	{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
 			'F'};
@@ -30,85 +27,14 @@ public class Hexadoku
 			{-1, 14, -1, -1, -1, -1, -1, -1, 11, 5, -1, -1, -1, 6, -1, -1}
 
 	};
-	private int[][] data2 = 
-		{
-				{-1, 5, 6, -1, 2, -1, -1, 7, -1, -1, 14, 10, -1, -1, 9, 11},
-				{-1, 11, -1, -1, 8, -1, 9, -1, -1, -1, 15, -1, -1, 12, -1, 5},
-				{8, 9, -1, 15, -1, 14, 5, 1, -1, 3, -1, -1, 6, 7, 13, -1},
-				{-1, 12, -1, 3, 6, -1, -1, -1, -1, 13, -1, -1, 10, 14, -1, -1},
-
-				{-1, 13, 8, -1, 15, -1, -1, -1, 0, 4, -1, 11, -1, -1, -1, 10},
-				{-1, -1, 3, -1, -1, 9, 11, 5, 13, 6, 12, -1, -1, -1, 14, 4},
-				{15, -1, -1, 5, 10, -1, -1, -1, -1, -1, 8, 9, 0, 2, -1, -1},
-				{11, -1, -1, -1, -1, -1, 4, -1, -1, -1, 3, 7, -1, -1, -1, -1},
-
-				{-1, 3, -1, -1, 1, 4, -1, -1, -1, -1, 6, -1, -1, 10, -1, 15},
-				{-1, 15, 13, 12, 9, 5, -1, -1, 3, -1, 0, -1, -1, 11, 1, -1},
-				{-1, -1, 0, 7, -1, -1, 12, 6, -1, -1, 4, -1, -1, 5, -1, -1},
-				{-1, -1, -1, -1, -1, -1, 15, 2, -1, 10, -1, 13, 3, -1, 0, 9},
-
-				{-1, 2, -1, -1, -1, 6, 1, -1, -1, 12, -1, -1, 4, 8, -1, -1},
-				{-1, -1, 1, -1, -1, 0, 2, -1, -1, -1, 7, 3, -1, -1, -1, 14},
-				{9, -1, -1, 10, -1, -1, 14, 15, -1, -1, -1, 6, 11, 0, 2, 1},
-				{-1, 14, -1, -1, -1, -1, -1, -1, 11, 5, -1, -1, -1, 6, -1, -1}
-
-		};
-
-	private int[][] blacklist =
-		{
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-				{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-
-		};
-	private int lline = 0;
-	private int lcolumn = 0;
 
 	
-	private void resetbl()
-	{
-		for (int line = 0; line < 16; line++)
-		{
-			for (int column = 0; column < 16; column++)
-			{
-				if(blacklist[line][column] != -1) blacklist[line][column] = -1;
-			}
-		}
-	}
-	
-	private void reset()
-	{
-		for (int line = 0; line < 16; line++)
-		{
-			for (int column = 0; column < 16; column++)
-			{
-				data[line][column] = data2[line][column];
-			}
-		}
-		
 
-		
-	}
+
 
 	/*
 	 * Method used for the output , it also uses the Method deztohex to Convert
-	 * Numbers greater than 9 to char's
+	 * Numbers greater than 9 to hex char's
 	 */
 	private void output()
 	{
@@ -140,53 +66,17 @@ public class Hexadoku
 		return hex;
 	}
 	/*
-	 * used to find a Solution for the Hexadoku
+	 * used to solve the hexadoku
 	 */
 	private void solve()
 	{
-		int fn = 0;
-		int pos = 0;
-		int counter = 0;
 
 		for (int line = 0; line < 16; line++) // counts lines
 		{
 
 			for (int column = 0; column < 16; column++) // counts columns
 			{
-				while (data[line][column] == -1)
-				{
-					for(int n=0; n < 16; ++n)
-					{
-						if (checkline(n, line, column) && checkcol(n, line, column) && checkblock(n, line, column) && n != forbidden)
-						{
-
-							data[line][column] = n;
-							n = 15;
-							 ++pos;
-							
-							if(counter > 10) output(); counter = 0;
-							
-						}
-						
-					}
-					if( data[line][column] == -1 )
-					{
-						
-						-- pos;
-						System.out.println(pos);
-						line =eline[pos];
-						column = ecolumn[pos];
-						forbidden = data[line][column];
-						data[line][column] = -1;
-						
-						fn = forbidden;
-						
-						
-						
-						
-					}
-				}
-						
+			
 			}
 					
 					
@@ -202,78 +92,14 @@ public class Hexadoku
 	
 
 	private boolean checkline(int n, int line, int col)
-	{
-		for (col = 0; col < 16; ++col)
-		{
-			if (data[line][col] != -1)
-			{
-				if (data[line][col] == n)
-					return false;
-			}
-		}
-		return true;
-
-	}
 
 	private boolean checkcol(int n, int line, int col)
-	{
-		for (; line < 16; line++)
-		{
-			if (data[line][col] != -1)
-			{
-				if (data[line][col] == n)
-					return false;
-			}
-		}
-		return true;
-
-	}
 
 	private boolean checkblock(int n, int line, int col)
-	{
-		line = (line / 4) * 4;
-		col = (col / 4) * 4;
-
-		for (int boxline = line; boxline < line + 4; boxline++)
-		{
-			for (int boxcolumn = col; boxcolumn < col + 4; boxcolumn++)
-			{
-				if (data[boxline][boxcolumn] != -1)
-				{
-					if (data[boxline][boxcolumn] == n)
-						return false;
-				}
-
-			}
-
-		}
-		return true;
-
-	}
 	
 	
 	
 	private int empty()
-	{
-		int empty = 0;
-		
-		for (int line = 0; line < 16; line++)
-		{
-			for (int column = 0; column < 16; column++)
-			{
-				if (data[line][column] == -1) 
-					{
-						eline[empty] = line;				// eline + ecolumn together are able to give the information where the emtpy fields are
-						ecolumn[empty] = column;
-						
-						
-						++empty;	
-					}
-			}
-			
-		}
-		return empty;
-	}
 	
 	/*
 	 * Creates a new Hexadoku Object and executes implemented Methods to output
