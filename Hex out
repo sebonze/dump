@@ -1,0 +1,55 @@
+
+public class outputhandler
+{
+	// Needed as a orientation for the transformation from decimals to hex-decimals
+	private char[] hexDigits =
+		{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E','F'};
+	private int[][] data;
+	
+	/*
+	 *  Constructor for an instance of outputhandler which demands a data array which will be printed
+	 */
+	public outputhandler(int[][] pdata)
+	{
+		// TODO Auto-generated constructor stub
+		data = pdata;
+	}
+	
+	
+	/*
+	 * Method used for the output , it also uses the Method deztohex to Convert
+	 * Numbers greater than 9 to hex char's
+	 */
+	
+	public void print()
+	{
+		System.out.println();
+		for (int line = 0; line < 16; line++)
+		{
+			for (int column = 0; column < 16; column++)
+			{
+				if (data[line][column] == -1)
+					System.out.print("# ");
+				else if (data[line][column] > 9)
+					System.out.print(deztohex(data[line][column]) + " ");
+				else
+					System.out.print(data[line][column] + " ");
+			}
+			System.out.println();
+		}
+
+	}
+	
+	
+	/*
+	 * Used by output , described above
+	 */
+	private char deztohex(int dez)
+	{
+		char hex = ' ';
+		hex = hexDigits[dez];
+		return hex;
+	}
+	
+
+}
