@@ -1,0 +1,29 @@
+
+
+public class Hexadoku
+{
+	private int[][] data = // Zeile / Spalte
+	
+	// both variables are used for debugging purposes.
+	private int gc = 0;
+	private long gc2 = 0;
+	
+	// Needed so this class has access to check methods to test if the given number is valid in a wanted position.
+	private validation val = new validation(data);
+
+	
+	/*
+	 * used to solve the hexadoku with a recursive algorithm .
+	 */
+	private boolean solve(int line,int column)
+
+
+	
+	
+	/*
+	 * Creates a new Hexadoku Object and executes implemented Methods to output
+	 * and solve the Hexadoku
+	 */
+	public static void main(String[] args)
+
+}
