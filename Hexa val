@@ -1,0 +1,111 @@
+
+public class validation
+{
+	private int[][] data;
+	
+	/*
+	 * Constructor for validation so it has access to a filled array which is needed for the validation checks
+	 * also it prints the amount of missing/empty fields in the given array. 
+	 * 
+	 */
+	public validation(int[][] pdata)
+	{
+		// TODO Auto-generated constructor stub
+		data = pdata;
+		System.out.println("The Hexadoku has "+ empty() + " empty fields");
+	}
+	
+	/*
+	 * A easy access for public use so other classes that access this one do not need to call all check methods by itself.
+	 */
+	public boolean valid(int n, int line, int col)
+	{
+		if (checkline(n, line, col) && checkcol(n, line, col) && checkblock(n, line, col))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	 * Checks if the given number is already existent in the given line.
+	 */
+	private boolean checkline(int n, int line, int col)
+	{
+		for (col = 0; col < 16; ++col)
+		{
+			if (data[line][col] != -1)
+			{
+				if (data[line][col] == n)
+					return false;
+			}
+		}
+		return true;
+
+	}
+
+	/*
+	 * Checks if the given number is already existent in the given column.
+	 */
+	private boolean checkcol(int n, int line, int col)
+	{
+		for (line = 0; line < 16; line++)
+		{
+			if (data[line][col] != -1)
+			{
+				if (data[line][col] == n)
+					return false;
+			}
+		}
+		return true;
+
+	}
+
+	/*
+	 * Checks if the given number is already existent in the given block/square/box.
+	 */
+	private boolean checkblock(int n, int line, int col)
+	{
+		line = (line / 4) * 4;
+		col = (col / 4) * 4;
+
+		for (int boxline = line; boxline < line + 4; boxline++)
+		{
+			for (int boxcolumn = col; boxcolumn < col + 4; boxcolumn++)
+			{
+				if (data[boxline][boxcolumn] != -1)
+				{
+					if (data[boxline][boxcolumn] == n)
+						return false;
+				}
+
+			}
+
+		}
+		return true;
+
+	}
+	
+	
+	/*
+	 * Retruns the amount of emtpy fields in the given 2d array and is used by the constructor and the main solve function of Hexadoku.
+	 */
+	public int empty()
+	{
+		int empty = 0;
+		
+		for (int line = 0; line < 16; line++)
+		{
+			for (int column = 0; column < 16; column++)
+			{
+				if (data[line][column] == -1) 
+					{
+						++empty;	
+					}
+			}
+			
+		}
+		return empty;
+	}
+
+}
