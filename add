@@ -1,0 +1,15 @@
+Die XML Path Language (XPath) dient dem Adressieren von Knoten in XML-Dokumenten und benutzt hierzu Pfaden ähnliche Ausdrücke.
+
+Zur Adressierung eines Elements wird ein durch / getrennter Pfad über alle übergeordneten Elemente angegeben. Bei absoluter Adressierung vom Wurzelelement aus wird der Pfad mit einem / eingeleitet.
+
+Beispiel
+<?xml version="1.0" encoding="UTF-8"?>
+<film>
+    <titel>Metropolis</titel>
+    <jahr>1927</jahr>
+    <regie>Fritz Lang</regie>
+</film>
+
+Der Ausdruck /film/jahr/@typ adressiert den Attributknoten "typ" des angegebenen Jahres.
+
+Somit könnte man XML Dokument in kombination mit XPath als als eine Art Datenbank verstehen auf die mithilfe der Pfad ähnlichen angaben Informationen ausgelesen werden können. 
